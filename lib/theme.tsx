@@ -21,7 +21,13 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const saved = localStorage.getItem("theme") as Theme;
-    if (saved === "light" || saved === "dark") {
+    if (saved === "light") {
+      setThemeState("dark");
+      document.documentElement.setAttribute("data-theme", "dark");
+      localStorage.setItem("theme", "dark");
+      return;
+    }
+    if (saved === "dark") {
       setThemeState(saved);
       document.documentElement.setAttribute("data-theme", saved);
     }
@@ -54,7 +60,7 @@ export function ThemeSwitcher() {
     <button
       onClick={toggleTheme}
       className="px-2 py-1.5 rounded-lg bg-[var(--bg)] border border-[var(--border)] text-sm hover:border-[var(--accent)] transition cursor-pointer"
-      title={theme === "dark" ? "切换到亮色模式" : "切换到暗色模式"}
+      title={theme === "dark" ? "สลับเป็นโหมดสว่าง" : "สลับเป็นโหมดถ้ำค้างคาว"}
     >
       {theme === "dark" ? "☀️" : "🌙"}
     </button>

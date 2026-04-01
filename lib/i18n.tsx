@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
+import { thaiZhTwOverrides } from "@/lib/i18n-thai";
 
 export type Locale = "zh-TW" | "zh" | "en";
 
@@ -871,6 +872,11 @@ const translations: Record<Locale, Record<string, string>> = {
   },
 };
 
+const thaiTraditionalTranslations: Record<string, string> = {
+  ...translations["zh-TW"],
+  ...thaiZhTwOverrides,
+};
+
 interface I18nContextType {
   locale: Locale;
   setLocale: (l: Locale) => void;
@@ -878,17 +884,22 @@ interface I18nContextType {
 }
 
 const I18nContext = createContext<I18nContextType>({
-  locale: "zh",
+  locale: "zh-TW",
   setLocale: () => {},
   t: (key) => key,
 });
 
 export function I18nProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>("zh");
+  const [locale, setLocaleState] = useState<Locale>("zh-TW");
 
   useEffect(() => {
     const saved = localStorage.getItem("locale") as Locale;
-    if (saved && (saved === "zh-TW" || saved === "zh" || saved === "en")) {
+    if (saved === "zh") {
+      setLocaleState("zh-TW");
+      localStorage.setItem("locale", "zh-TW");
+      return;
+    }
+    if (saved && (saved === "zh-TW" || saved === "en")) {
       setLocaleState(saved);
     }
   }, []);
@@ -901,7 +912,10 @@ export function I18nProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const t = useCallback(
-    (key: string) => translations[locale]?.[key] ?? translations.zh[key] ?? key,
+    (key: string) => {
+      const activeTranslations = locale === "zh-TW" ? thaiTraditionalTranslations : translations[locale];
+      return activeTranslations?.[key] ?? thaiTraditionalTranslations[key] ?? key;
+    },
     [locale]
   );
 
@@ -924,7 +938,7 @@ export function LanguageSwitcher() {
       onChange={(e) => setLocale(e.target.value as Locale)}
       className="px-3 py-1.5 rounded-lg bg-[var(--card)] border border-[var(--border)] text-xs font-medium hover:border-[var(--accent)] transition cursor-pointer text-[var(--text)]"
     >
-      <option value="zh-TW">繁體中文</option>
+      <option value="zh-TW">ไทย</option>
       <option value="zh">简体中文</option>
       <option value="en">English</option>
     </select>

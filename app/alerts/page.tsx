@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import { BatAvatar } from "@/app/components/bat-avatar";
 
 interface AlertRule {
   id: string;
@@ -27,10 +28,10 @@ interface Agent {
 
 const RULE_DESCRIPTIONS: Record<string, Record<string, string>> = {
   "zh-TW": {
-    model_unavailable: "模型不可用 - 當測試模型失敗時觸發",
-    bot_no_response: "Bot 長時間無回應 - 當機器人超過設定時間未回應時觸發",
-    message_failure_rate: "訊息失敗率升高 - 當訊息失敗率超過閾值時觸發",
-    cron连续_failure: "Cron 連續失敗 - 當定時任務連續失敗超過設定次數時觸發",
+    model_unavailable: "โมเดลใช้งานไม่ได้ - แจ้งเตือนเมื่อทดสอบโมเดลไม่ผ่าน",
+    bot_no_response: "เอเจนท์ไม่ตอบนานเกินกำหนด - แจ้งเตือนเมื่อเงียบเกินเวลาที่ตั้งไว้",
+    message_failure_rate: "อัตราข้อความล้มเหลวสูง - แจ้งเตือนเมื่อเกินค่า threshold",
+    cron连续_failure: "Cron ล้มเหลวต่อเนื่อง - แจ้งเตือนเมื่อภารกิจตามเวลาเสียซ้ำหลายครั้ง",
   },
   zh: {
     model_unavailable: "模型不可用 - 当测试模型失败时触发",
@@ -68,25 +69,25 @@ export default function AlertsPage() {
   const ruleDescriptions = RULE_DESCRIPTIONS[locale as keyof typeof RULE_DESCRIPTIONS] || RULE_DESCRIPTIONS.zh;
   const isEnglish = locale === "en";
   const isTraditionalChinese = locale === "zh-TW";
-  const timeLocale = isEnglish ? "en-US" : isTraditionalChinese ? "zh-TW" : "zh-CN";
+  const timeLocale = isEnglish ? "en-US" : isTraditionalChinese ? "th-TH" : "zh-CN";
   const ui = {
-    minutes5: isEnglish ? "5 minutes" : isTraditionalChinese ? "5 分鐘" : "5 分钟",
-    minutes10: isEnglish ? "10 minutes" : isTraditionalChinese ? "10 分鐘" : "10 分钟",
-    minutes30: isEnglish ? "30 minutes" : isTraditionalChinese ? "30 分鐘" : "30 分钟",
-    hour1: isEnglish ? "1 hour" : isTraditionalChinese ? "1 小時" : "1 小时",
-    hours2: isEnglish ? "2 hours" : isTraditionalChinese ? "2 小時" : "2 小时",
-    hours5: isEnglish ? "5 hours" : isTraditionalChinese ? "5 小時" : "5 小时",
-    checking: isEnglish ? "⏳ Checking..." : isTraditionalChinese ? "⏳ 檢查中..." : "⏳ 检查中...",
-    checkNow: isEnglish ? "🔄 Check Now" : isTraditionalChinese ? "🔄 立即檢查" : "🔄 立即检查",
-    alertsTriggered: isEnglish ? "⚠️ Alerts Triggered" : isTraditionalChinese ? "⚠️ 警報觸發" : "⚠️ 告警触发",
-    checkingAlerts: isEnglish ? "⏳ Checking alerts..." : isTraditionalChinese ? "⏳ 正在檢查警報..." : "⏳ 正在检查告警...",
-    timeout: isEnglish ? "Timeout (s):" : isTraditionalChinese ? "超時 (秒):" : "超时 (秒):",
-    failureRate: isEnglish ? "Failure rate (%):" : isTraditionalChinese ? "失敗率 (%):" : "失败率 (%):",
-    maxFailures: isEnglish ? "Max failures:" : isTraditionalChinese ? "最大失敗數:" : "最大失败数:",
-    threshold: isEnglish ? "Threshold:" : isTraditionalChinese ? "閾值:" : "阈值:",
-    monitor: isEnglish ? "Monitor:" : isTraditionalChinese ? "檢測機器人:" : "检测机器人:",
-    emptyMeansAll: isEnglish ? "(empty = all)" : isTraditionalChinese ? "(不選則檢測所有)" : "(不选则检测所有)",
-    saved: isEnglish ? "Saved" : isTraditionalChinese ? "已保存" : "已保存",
+    minutes5: isEnglish ? "5 minutes" : isTraditionalChinese ? "5 นาที" : "5 分钟",
+    minutes10: isEnglish ? "10 minutes" : isTraditionalChinese ? "10 นาที" : "10 分钟",
+    minutes30: isEnglish ? "30 minutes" : isTraditionalChinese ? "30 นาที" : "30 分钟",
+    hour1: isEnglish ? "1 hour" : isTraditionalChinese ? "1 ชั่วโมง" : "1 小时",
+    hours2: isEnglish ? "2 hours" : isTraditionalChinese ? "2 ชั่วโมง" : "2 小时",
+    hours5: isEnglish ? "5 hours" : isTraditionalChinese ? "5 ชั่วโมง" : "5 小时",
+    checking: isEnglish ? "⏳ Checking..." : isTraditionalChinese ? "⏳ กำลังตรวจสอบ..." : "⏳ 检查中...",
+    checkNow: isEnglish ? "🔄 Check Now" : isTraditionalChinese ? "🔄 ตรวจสอบทันที" : "🔄 立即检查",
+    alertsTriggered: isEnglish ? "⚠️ Alerts Triggered" : isTraditionalChinese ? "⚠️ มีการเตือนเกิดขึ้น" : "⚠️ 告警触发",
+    checkingAlerts: isEnglish ? "⏳ Checking alerts..." : isTraditionalChinese ? "⏳ กำลังตรวจสอบการเตือน..." : "⏳ 正在检查告警...",
+    timeout: isEnglish ? "Timeout (s):" : isTraditionalChinese ? "หมดเวลา (วินาที):" : "超时 (秒):",
+    failureRate: isEnglish ? "Failure rate (%):" : isTraditionalChinese ? "อัตราล้มเหลว (%):" : "失败率 (%):",
+    maxFailures: isEnglish ? "Max failures:" : isTraditionalChinese ? "จำนวนล้มเหลวสูงสุด:" : "最大失败数:",
+    threshold: isEnglish ? "Threshold:" : isTraditionalChinese ? "ค่า Threshold:" : "阈值:",
+    monitor: isEnglish ? "Monitor:" : isTraditionalChinese ? "เอเจนท์ที่ต้องตรวจ:" : "检测机器人:",
+    emptyMeansAll: isEnglish ? "(empty = all)" : isTraditionalChinese ? "(เว้นว่าง = ตรวจทั้งหมด)" : "(不选则检测所有)",
+    saved: isEnglish ? "Saved" : isTraditionalChinese ? "บันทึกแล้ว" : "已保存",
   };
 
   // 加载配置
@@ -354,13 +355,14 @@ export default function AlertsPage() {
               key={agent.id}
               onClick={() => handleAgentChange(agent.id)}
               disabled={!config.enabled || saving}
-              className={`px-4 py-2 rounded-lg border transition ${
+              className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg border transition ${
                 config.receiveAgent === agent.id
                   ? "bg-[var(--accent)] text-[var(--bg)] border-[var(--accent)]"
                   : "bg-[var(--bg)] border-[var(--border)] hover:border-[var(--accent)]"
               } ${!config.enabled ? "opacity-50 cursor-not-allowed" : ""}`}
             >
-              {agent.emoji} {agent.name}
+              <BatAvatar agentId={agent.id} name={agent.name} emoji={agent.emoji} size={22} />
+              <span>{agent.name}</span>
             </button>
           ))}
         </div>
@@ -471,13 +473,14 @@ export default function AlertsPage() {
                               .finally(() => setSaving(false));
                           }}
                           disabled={!config.enabled || saving}
-                          className={`px-2 py-1 text-xs rounded border transition ${
+                          className={`inline-flex items-center gap-1.5 px-2 py-1 text-xs rounded border transition ${
                             selected
                               ? "bg-[var(--accent)] text-[var(--bg)] border-[var(--accent)]"
                               : "bg-[var(--bg)] border-[var(--border)] hover:border-[var(--accent)]"
                           } disabled:opacity-50`}
                         >
-                          {agent.emoji} {agent.name}
+                          <BatAvatar agentId={agent.id} name={agent.name} emoji={agent.emoji} size={18} />
+                          <span>{agent.name}</span>
                         </button>
                       );
                     })}

@@ -218,30 +218,18 @@ export function getSeatTiles(seats: Map<string, Seat>): Set<string> {
   return tiles
 }
 
-/** Default floor colors */
-const DEFAULT_LEFT_ROOM_COLOR: FloorColor = { h: 35, s: 30, b: 15, c: 0 }  // warm beige
-const DEFAULT_RIGHT_ROOM_COLOR: FloorColor = { h: 25, s: 45, b: 5, c: 10 }  // warm brown
-const DEFAULT_CARPET_COLOR: FloorColor = { h: 280, s: 40, b: -5, c: 0 }     // purple
-const DEFAULT_DOORWAY_COLOR: FloorColor = { h: 35, s: 25, b: 10, c: 0 }     // tan
-const DEFAULT_LOUNGE_COLOR: FloorColor = { h: 200, s: 30, b: 10, c: 0 }     // cool blue
-
-const RIGHT_WALL_STOOLS: ReadonlyArray<PlacedFurniture> = [
-  // Right-office right wall: 2 vertical columns × 4 stools each
-  { uid: 'stool-r1', type: FurnitureType.BENCH, col: 19, row: 3 },
-  { uid: 'stool-r2', type: FurnitureType.BENCH, col: 19, row: 4.5 },
-  { uid: 'stool-r3', type: FurnitureType.BENCH, col: 19, row: 6 },
-  { uid: 'stool-r4', type: FurnitureType.BENCH, col: 19, row: 7.5 },
-  { uid: 'stool-r5', type: FurnitureType.BENCH, col: 17, row: 3 },
-  { uid: 'stool-r6', type: FurnitureType.BENCH, col: 17, row: 4.5 },
-  { uid: 'stool-r7', type: FurnitureType.BENCH, col: 17, row: 6 },
-  { uid: 'stool-r8', type: FurnitureType.BENCH, col: 17, row: 7.5 },
-]
-const LEFT_WALL_SERVER: Readonly<PlacedFurniture> = {
-  uid: 'server-b-left',
-  type: FurnitureType.SERVER_RACK,
-  col: 1,
-  row: 12,
-}
+/** Batcave palette */
+const BATCAVE_WALL_COLOR: FloorColor = { h: 220, s: 20, b: -42, c: 18, colorize: true }
+const COMMAND_PLATFORM_COLOR: FloorColor = { h: 218, s: 28, b: -16, c: 18, colorize: true }
+const ARMORY_FLOOR_COLOR: FloorColor = { h: 30, s: 22, b: -18, c: 14, colorize: true }
+const TACTICAL_PLATFORM_COLOR: FloorColor = { h: 46, s: 58, b: -8, c: 8, colorize: true }
+const CATWALK_COLOR: FloorColor = { h: 218, s: 12, b: -6, c: 10, colorize: true }
+const CAVE_FLOOR_COLOR: FloorColor = { h: 210, s: 26, b: -10, c: 18, colorize: true }
+const DATA_CORE_COLOR: FloorColor = { h: 196, s: 44, b: -6, c: 12, colorize: true }
+const CONSOLE_TINT: FloorColor = { h: 220, s: 24, b: -18, c: 16 }
+const STORAGE_TINT: FloorColor = { h: 212, s: 10, b: -4, c: 12 }
+const ORACLE_GLOW_TINT: FloorColor = { h: 258, s: 42, b: -10, c: 18 }
+const LUCIUS_BENCH_TINT: FloorColor = { h: 202, s: 18, b: -14, c: 16 }
 
 function shouldRemoveRightOfficeLegacyItems(item: PlacedFurniture): boolean {
   if (item.uid.startsWith('stool-r')) return true
@@ -253,19 +241,10 @@ function shouldRemoveRightOfficeLegacyItems(item: PlacedFurniture): boolean {
 }
 
 function normalizeRightOfficeFurniture(furniture: PlacedFurniture[]): PlacedFurniture[] {
-  const base = furniture.filter((item) => !shouldRemoveRightOfficeLegacyItems(item))
-  const next = [...base]
-  for (const stool of RIGHT_WALL_STOOLS) {
-    const exists = next.some((item) => item.uid === stool.uid)
-    if (!exists) next.push({ ...stool })
-  }
-  if (!next.some((item) => item.uid === LEFT_WALL_SERVER.uid)) {
-    next.push({ ...LEFT_WALL_SERVER })
-  }
-  return next
+  return furniture.filter((item) => !shouldRemoveRightOfficeLegacyItems(item))
 }
 
-/** Create the default office layout — 21×17 multi-room office */
+/** Create the default batcave layout — 21×17 command center */
 export function createDefaultLayout(): OfficeLayout {
   const W = TileType.WALL
   const F1 = TileType.FLOOR_1
@@ -273,111 +252,103 @@ export function createDefaultLayout(): OfficeLayout {
   const F3 = TileType.FLOOR_3
   const F4 = TileType.FLOOR_4
 
-  // Build tile grid row by row
-  // Layout: top work rooms (rows 0-9), corridor (row 10), bottom lounge/meeting (rows 11-16)
-  const cols = DEFAULT_COLS  // 21
-  const rows = DEFAULT_ROWS  // 17
+  const cols = DEFAULT_COLS
+  const rows = DEFAULT_ROWS
   const tiles: TileTypeVal[] = []
   const tileColors: Array<FloorColor | null> = []
 
   for (let r = 0; r < rows; r++) {
     for (let c = 0; c < cols; c++) {
-      // Outer walls
       if (r === 0 || r === rows - 1 || c === 0 || c === cols - 1) {
-        tiles.push(W); tileColors.push(null); continue
+        tiles.push(W); tileColors.push(BATCAVE_WALL_COLOR); continue
       }
-      // Divider wall between left and right rooms (col 10), with doorway
       if (c === 10 && r <= 9) {
         if (r >= 4 && r <= 6) {
-          tiles.push(F4); tileColors.push(DEFAULT_DOORWAY_COLOR)
+          tiles.push(F4); tileColors.push(CATWALK_COLOR)
         } else {
-          tiles.push(W); tileColors.push(null)
+          tiles.push(W); tileColors.push(BATCAVE_WALL_COLOR)
         }
         continue
       }
-      // Horizontal wall between top rooms and bottom area (row 10), with two doorways
       if (r === 10) {
         if ((c >= 4 && c <= 6) || (c >= 14 && c <= 16)) {
-          tiles.push(F4); tileColors.push(DEFAULT_DOORWAY_COLOR)
+          tiles.push(F4); tileColors.push(CATWALK_COLOR)
         } else {
-          tiles.push(W); tileColors.push(null)
+          tiles.push(W); tileColors.push(BATCAVE_WALL_COLOR)
         }
         continue
       }
-      // Carpet area in right room (meeting corner)
-      if (c >= 15 && c <= 18 && r >= 7 && r <= 9) {
-        tiles.push(F3); tileColors.push(DEFAULT_CARPET_COLOR); continue
-      }
-      // Top rooms
       if (r < 10) {
         if (c < 10) {
-          tiles.push(F1); tileColors.push(DEFAULT_LEFT_ROOM_COLOR)
+          tiles.push(F1); tileColors.push(COMMAND_PLATFORM_COLOR)
+        } else if (c >= 12 && c <= 16 && r >= 3 && r <= 6) {
+          tiles.push(F3); tileColors.push(TACTICAL_PLATFORM_COLOR)
         } else {
-          tiles.push(F2); tileColors.push(DEFAULT_RIGHT_ROOM_COLOR)
+          tiles.push(F2); tileColors.push(ARMORY_FLOOR_COLOR)
         }
         continue
       }
-      // Bottom lounge area
-      if (c >= 8 && c <= 12 && r >= 13 && r <= 15) {
-        tiles.push(F3); tileColors.push(DEFAULT_CARPET_COLOR)
+      if (c >= 7 && c <= 13 && r >= 12 && r <= 15) {
+        tiles.push(F3); tileColors.push(DATA_CORE_COLOR)
       } else {
-        tiles.push(F1); tileColors.push(DEFAULT_LOUNGE_COLOR)
+        tiles.push(F1); tileColors.push(CAVE_FLOOR_COLOR)
       }
     }
   }
 
   const furniture: PlacedFurniture[] = [
-    // ── Left work room — 4 horizontal desks in 2×2 grid ──
-    // Top row: benches above desks, PCs show back
-    { uid: 'desk-l1', type: FurnitureType.TABLE_WOOD_SM_HORIZONTAL, col: 3, row: 3 },
-    { uid: 'chair-l1', type: FurnitureType.BENCH, col: 3.5, row: 2 },
-    { uid: 'desk-l2', type: FurnitureType.TABLE_WOOD_SM_HORIZONTAL, col: 6, row: 3 },
-    { uid: 'chair-l2', type: FurnitureType.BENCH, col: 6.5, row: 2 },
-    // Bottom row: benches below desks, PCs show front
-    { uid: 'desk-l3', type: FurnitureType.TABLE_WOOD_SM_HORIZONTAL, col: 3, row: 6 },
-    { uid: 'chair-l3', type: FurnitureType.BENCH, col: 3.5, row: 7 },
-    { uid: 'desk-l4', type: FurnitureType.TABLE_WOOD_SM_HORIZONTAL, col: 6, row: 6 },
-    { uid: 'chair-l4', type: FurnitureType.BENCH, col: 6.5, row: 7 },
-    { uid: 'bookshelf-l', type: FurnitureType.BOOKSHELF, col: 1, row: 5 },
-    { uid: 'plant-l1', type: FurnitureType.PLANT, col: 1, row: 1 },
-    { uid: 'lamp-l', type: FurnitureType.LAMP, col: 1, row: 3 },
-    { uid: 'pc-l1', type: FurnitureType.PC, col: 3.5, row: 2.75, rotation: 180 },
-    { uid: 'pc-l2', type: FurnitureType.PC, col: 6.5, row: 2.75, rotation: 180 },
-    { uid: 'pc-l3', type: FurnitureType.PC, col: 3.5, row: 5.5 },
-    { uid: 'coffee-l', type: FurnitureType.COFFEE, col: 4.17, row: 5.75 },
-    { uid: 'pc-l4', type: FurnitureType.PC, col: 6.5, row: 5.5 },
-    { uid: 'phone-l', type: FurnitureType.PHONE, col: 7.17, row: 5.75 },
+    // Left command deck
+    { uid: 'cmd-panel-left', type: FurnitureType.BATSIGNAL_PANEL, col: 3, row: 0 },
+    { uid: 'cmd-console-1', type: FurnitureType.COMMAND_CONSOLE, col: 2, row: 3, color: CONSOLE_TINT },
+    { uid: 'cmd-seat-1', type: FurnitureType.BENCH, col: 2.5, row: 2 },
+    { uid: 'cmd-console-2', type: FurnitureType.COMMAND_CONSOLE, col: 5, row: 3, color: CONSOLE_TINT },
+    { uid: 'cmd-seat-2', type: FurnitureType.BENCH, col: 5.5, row: 2 },
+    { uid: 'cmd-console-3', type: FurnitureType.COMMAND_CONSOLE, col: 2, row: 6, color: CONSOLE_TINT },
+    { uid: 'cmd-seat-3', type: FurnitureType.BENCH, col: 2.5, row: 7 },
+    { uid: 'cmd-console-4', type: FurnitureType.COMMAND_CONSOLE, col: 5, row: 6, color: CONSOLE_TINT },
+    { uid: 'cmd-seat-4', type: FurnitureType.BENCH, col: 5.5, row: 7 },
+    { uid: 'oracle-terminal', type: FurnitureType.ORACLE_TERMINAL, col: 7, row: 3, color: ORACLE_GLOW_TINT },
+    { uid: 'oracle-seat', type: FurnitureType.CHAIR, col: 7, row: 2 },
+    { uid: 'cmd-pc-1', type: FurnitureType.PC, col: 2.5, row: 2.75, rotation: 180 },
+    { uid: 'cmd-pc-2', type: FurnitureType.PC, col: 5.5, row: 2.75, rotation: 180 },
+    { uid: 'cmd-pc-3', type: FurnitureType.PC, col: 2.5, row: 5.5 },
+    { uid: 'cmd-pc-4', type: FurnitureType.PC, col: 5.5, row: 5.5 },
+    { uid: 'oracle-pc-left', type: FurnitureType.PC, col: 7.25, row: 2.75, rotation: 180 },
+    { uid: 'oracle-pc-right', type: FurnitureType.PC, col: 8.1, row: 2.75, rotation: 180 },
+    { uid: 'cmd-phone', type: FurnitureType.PHONE, col: 6.2, row: 5.75 },
+    { uid: 'cmd-coffee', type: FurnitureType.COFFEE, col: 3.2, row: 5.75 },
 
-    // ── Right work room ──
-    { uid: 'desk-r1', type: FurnitureType.DESK, col: 13, row: 3 },
-    { uid: 'chair-r1-top', type: FurnitureType.CHAIR, col: 13, row: 2 },
-    { uid: 'chair-r1-bottom', type: FurnitureType.CHAIR, col: 14, row: 5 },
-    { uid: 'chair-r1-left', type: FurnitureType.CHAIR, col: 12, row: 4 },
-    { uid: 'chair-r1-right', type: FurnitureType.CHAIR, col: 15, row: 3 },
-    { uid: 'pc-r', type: FurnitureType.PC, col: 14, row: 2.75, rotation: 270 },
-    { uid: 'camera-r', type: FurnitureType.CAMERA, col: 13.5, row: 3.5 },
-    { uid: 'whiteboard-r', type: FurnitureType.WHITEBOARD, col: 15, row: 0 },
-    { uid: 'library-r', type: FurnitureType.LIBRARY_GRAY_FULL, col: 17.5, row: -0.5 },
-    { uid: 'clock-r', type: FurnitureType.CLOCK, col: 11, row: 0 },
-    ...RIGHT_WALL_STOOLS,
+    // Armory + strategy bay
+    { uid: 'suit-left', type: FurnitureType.BATSUIT_DISPLAY, col: 12, row: 0 },
+    { uid: 'signal-panel-right', type: FurnitureType.BATSIGNAL_PANEL, col: 14, row: 0 },
+    { uid: 'trophy-top', type: FurnitureType.TROPHY_CASE, col: 17, row: 0 },
+    { uid: 'suit-right', type: FurnitureType.BATSUIT_DISPLAY, col: 19, row: 0 },
+    { uid: 'holo-table', type: FurnitureType.HOLO_TABLE, col: 13, row: 3 },
+    { uid: 'holo-seat-top', type: FurnitureType.CHAIR, col: 13, row: 2 },
+    { uid: 'holo-seat-bottom', type: FurnitureType.CHAIR, col: 14, row: 5 },
+    { uid: 'holo-seat-left', type: FurnitureType.CHAIR, col: 12, row: 4 },
+    { uid: 'holo-seat-right', type: FurnitureType.CHAIR, col: 15, row: 3 },
+    { uid: 'training-dummy', type: FurnitureType.TRAINING_DUMMY, col: 18, row: 4 },
+    { uid: 'armory-shelf', type: FurnitureType.BOOKSHELF, col: 18, row: 7, color: STORAGE_TINT },
+    { uid: 'armory-lamp', type: FurnitureType.LAMP, col: 17, row: 8 },
+    { uid: 'armory-bench', type: FurnitureType.BENCH, col: 16, row: 9 },
 
-    // ── Right room meeting corner ──
-    { uid: 'bench-r', type: FurnitureType.BENCH, col: 16, row: 9 },
-
-    // ── Bottom lounge / break area ──
-    { uid: 'fridge-b', type: FurnitureType.FRIDGE, col: 1, row: 9.5 },
-    { ...LEFT_WALL_SERVER },
-    { uid: 'water-cooler-b', type: FurnitureType.WATER_COOLER, col: 8, row: 9.5 },
-    { uid: 'deco-b', type: FurnitureType.DECO_3, col: 9, row: 9.5 },
-    { uid: 'plant-b1', type: FurnitureType.PLANT, col: 1, row: 15 },
-    { uid: 'plant-b2', type: FurnitureType.PLANT_SMALL, col: 19, row: 15 },
-    { uid: 'plant-b3', type: FurnitureType.PLANT_SMALL, col: 19, row: 10.5 },
-    { uid: 'painting-l2', type: FurnitureType.PAINTING_LARGE_2, col: 11, row: 10 },
-    { uid: 'bookshelf-b', type: FurnitureType.BOOKSHELF, col: 18, row: 9.5 },
-    { uid: 'sofa-b', type: FurnitureType.SOFA, col: 10, row: 14, rotation: 180 },
-    { uid: 'bench-b1', type: FurnitureType.BENCH, col: 8, row: 15 },
-    { uid: 'bench-b2', type: FurnitureType.BENCH, col: 12, row: 15 },
-    { uid: 'lamp-b', type: FurnitureType.LAMP, col: 7, row: 14 },
+    // Lower cave floor
+    { uid: 'server-b-left', type: FurnitureType.SERVER_RACK, col: 1, row: 12 },
+    { uid: 'server-b-right', type: FurnitureType.SERVER_RACK, col: 3, row: 12 },
+    { uid: 'batcomputer-main', type: FurnitureType.BATCOMPUTER, col: 8, row: 12 },
+    { uid: 'bat-seat-left', type: FurnitureType.BENCH, col: 8.5, row: 15 },
+    { uid: 'bat-seat-right', type: FurnitureType.BENCH, col: 10.5, row: 15 },
+    { uid: 'bat-lamp-left', type: FurnitureType.LAMP, col: 7, row: 14 },
+    { uid: 'bat-lamp-right', type: FurnitureType.LAMP, col: 13, row: 14 },
+    { uid: 'trophy-lower', type: FurnitureType.TROPHY_CASE, col: 14, row: 11 },
+    { uid: 'lower-signal', type: FurnitureType.BATSIGNAL_PANEL, col: 14, row: 10 },
+    { uid: 'vault-lower', type: FurnitureType.BATSUIT_DISPLAY, col: 19, row: 10 },
+    { uid: 'lucius-bench', type: FurnitureType.GADGET_BENCH, col: 13, row: 14, color: LUCIUS_BENCH_TINT },
+    { uid: 'lucius-seat', type: FurnitureType.CHAIR, col: 13, row: 15 },
+    { uid: 'alfred-station', type: FurnitureType.ALFRED_STATION, col: 16, row: 13 },
+    { uid: 'gear-shelf-lower', type: FurnitureType.BOOKSHELF, col: 18, row: 12, color: STORAGE_TINT },
+    { uid: 'small-plant', type: FurnitureType.PLANT_SMALL, col: 19, row: 14 },
   ]
 
   return { version: 1, cols, rows, tiles, tileColors, furniture }
@@ -427,23 +398,22 @@ function migrateLayout(layout: OfficeLayout): OfficeLayout {
   for (const tile of layout.tiles) {
     switch (tile) {
       case 0: // WALL
-        tileColors.push(null)
+        tileColors.push(BATCAVE_WALL_COLOR)
         break
-      case 1: // was TILE_FLOOR → FLOOR_1 beige
-        tileColors.push(DEFAULT_LEFT_ROOM_COLOR)
+      case 1:
+        tileColors.push(COMMAND_PLATFORM_COLOR)
         break
-      case 2: // was WOOD_FLOOR → FLOOR_2 brown
-        tileColors.push(DEFAULT_RIGHT_ROOM_COLOR)
+      case 2:
+        tileColors.push(ARMORY_FLOOR_COLOR)
         break
-      case 3: // was CARPET → FLOOR_3 purple
-        tileColors.push(DEFAULT_CARPET_COLOR)
+      case 3:
+        tileColors.push(TACTICAL_PLATFORM_COLOR)
         break
-      case 4: // was DOORWAY → FLOOR_4 tan
-        tileColors.push(DEFAULT_DOORWAY_COLOR)
+      case 4:
+        tileColors.push(CATWALK_COLOR)
         break
       default:
-        // New tile types (5-7) without colors — use neutral gray
-        tileColors.push(tile > 0 ? { h: 0, s: 0, b: 0, c: 0 } : null)
+        tileColors.push(tile > 0 ? CAVE_FLOOR_COLOR : BATCAVE_WALL_COLOR)
     }
   }
 
@@ -466,6 +436,11 @@ const INTERACTABLE_TYPES = new Set([
   FurnitureType.BOOKSHELF, FurnitureType.LIBRARY_GRAY_FULL,
   FurnitureType.WHITEBOARD, FurnitureType.FRIDGE,
   FurnitureType.DECO_3,
+  FurnitureType.TROPHY_CASE, FurnitureType.BATSUIT_DISPLAY,
+  FurnitureType.BATSIGNAL_PANEL, FurnitureType.BATCOMPUTER,
+  FurnitureType.HOLO_TABLE,
+  FurnitureType.ORACLE_TERMINAL, FurnitureType.ALFRED_STATION,
+  FurnitureType.TRAINING_DUMMY, FurnitureType.GADGET_BENCH,
 ])
 
 /** Get interaction points adjacent to interactable furniture */

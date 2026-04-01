@@ -121,6 +121,16 @@ export const FurnitureType = {
   PHONE: 'phone',
   SOFA: 'sofa',
   COFFEE: 'coffee',
+  COMMAND_CONSOLE: 'command_console',
+  BATCOMPUTER: 'batcomputer',
+  HOLO_TABLE: 'holo_table',
+  BATSUIT_DISPLAY: 'batsuit_display',
+  TROPHY_CASE: 'trophy_case',
+  BATSIGNAL_PANEL: 'batsignal_panel',
+  ORACLE_TERMINAL: 'oracle_terminal',
+  ALFRED_STATION: 'alfred_station',
+  TRAINING_DUMMY: 'training_dummy',
+  GADGET_BENCH: 'gadget_bench',
 } as const
 export type FurnitureType = (typeof FurnitureType)[keyof typeof FurnitureType]
 

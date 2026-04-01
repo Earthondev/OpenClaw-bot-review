@@ -5,6 +5,7 @@ import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { buildGatewayUrl } from "@/lib/gateway-url";
 import { useI18n } from "@/lib/i18n";
+import { BatAvatar } from "@/app/components/bat-avatar";
 
 interface AgentInfo {
   id: string;
@@ -124,7 +125,7 @@ function AgentPicker() {
             className="p-5 rounded-xl border border-[var(--border)] bg-[var(--card)] hover:border-[var(--accent)] transition cursor-pointer block"
           >
             <div className="flex items-center gap-3 mb-3">
-              <span className="text-3xl">{agent.emoji}</span>
+              <BatAvatar agentId={agent.id} name={agent.name} emoji={agent.emoji} size={42} />
               <div>
                 <h3 className="text-lg font-semibold text-[var(--text)]">{agent.name}</h3>
                 {agent.name !== agent.id && (

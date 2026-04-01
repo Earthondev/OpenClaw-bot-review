@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type HTMLAttributes } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { BATCAVE_BRAND } from "@/lib/batcave";
 import { useI18n, LanguageSwitcher } from "@/lib/i18n";
 import { ThemeSwitcher } from "@/lib/theme";
 
@@ -195,6 +196,45 @@ function NavItemIcon({ name, active }: { name: NavIconName; active: boolean }) {
       }}
     >
       <NavPixelIcon name={name} active={active} />
+    </span>
+  );
+}
+
+function BrandMark({ className, style, ...props }: HTMLAttributes<HTMLSpanElement>) {
+  return (
+    <span
+      className={`relative inline-flex items-center justify-center leading-none ${className || ""}`.trim()}
+      style={style}
+      {...props}
+    >
+      <svg
+        viewBox="0 0 64 64"
+        width="1em"
+        height="1em"
+        aria-hidden="true"
+        style={{ display: "block", filter: "drop-shadow(0 4px 10px rgba(0,0,0,0.28))" }}
+      >
+        <defs>
+          <linearGradient id="batcave-brand-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#1d2946" />
+            <stop offset="100%" stopColor="#0a1020" />
+          </linearGradient>
+          <linearGradient id="batcave-brand-gold" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#f6cf58" />
+            <stop offset="100%" stopColor="#a97716" />
+          </linearGradient>
+        </defs>
+        <rect x="5" y="6" width="54" height="52" rx="16" fill="url(#batcave-brand-bg)" />
+        <rect x="7" y="8" width="50" height="48" rx="14" fill="none" stroke="#d4a72c" strokeOpacity="0.75" strokeWidth="2.5" />
+        <path
+          d="M10 39 L17 31 L24 31 L28 20 L32 25 L36 20 L40 31 L47 31 L54 39 L47 40 L42 47 L36 44 L32 49 L28 44 L22 47 L17 40 Z"
+          fill="url(#batcave-brand-gold)"
+        />
+        <path d="M22 18 L28 13 L31 20 L24 23 Z" fill="#f8e29a" fillOpacity="0.8" />
+        <path d="M42 18 L36 13 L33 20 L40 23 Z" fill="#f8e29a" fillOpacity="0.8" />
+        <rect x="17" y="15" width="30" height="2" rx="1" fill="#5a6c9a" fillOpacity="0.45" />
+        <rect x="16" y="49" width="32" height="2" rx="1" fill="#0d1528" fillOpacity="0.55" />
+      </svg>
     </span>
   );
 }
@@ -459,8 +499,8 @@ export function Sidebar() {
               onDragStart={handleLogoNativeDragStart}
               draggable={false}
             >
-              <span
-                className="relative inline-block leading-none transition-opacity duration-300"
+              <BrandMark
+                className="transition-opacity duration-300"
                 data-openclaw-logo-anchor="true"
                 onDragStart={handleLogoNativeDragStart}
                 draggable={false}
@@ -470,17 +510,15 @@ export function Sidebar() {
                   transformOrigin: "50% 50%",
                   opacity: logoCarry.hidden ? 0 : 1,
                 }}
-              >
-                🦞
-              </span>
+              />
               <div className="min-w-0">
                 <div className="text-xs font-bold tracking-wide truncate">
-                  OPENCLAW{mobileOpenclawVersion ? ` ${mobileOpenclawVersion}` : ""}
+                  {BATCAVE_BRAND.title}{mobileOpenclawVersion ? ` ${mobileOpenclawVersion}` : ""}
                 </div>
                 <div className="text-[10px] text-[var(--text-muted)] truncate">
                   {pathname === "/" && mobileAgentCount !== null
                     ? `${mobileAgentCount} ${t("home.agentCount")}`
-                    : mobileCurrent ? t(mobileCurrent.labelKey) : "BOT DASHBOARD"}
+                    : mobileCurrent ? t(mobileCurrent.labelKey) : BATCAVE_BRAND.mobileSubtitle}
                 </div>
               </div>
             </Link>
@@ -602,8 +640,8 @@ export function Sidebar() {
           {collapsed ? (
             <div className="flex flex-col items-center gap-2">
               <Link href="/" onClickCapture={handleLogoClickCapture} onDragStart={handleLogoNativeDragStart} draggable={false}>
-                <span
-                  className="relative inline-block transition-opacity duration-300"
+                <BrandMark
+                  className="transition-opacity duration-300"
                   onMouseDown={handleLogoMouseDown}
                   onDragStart={handleLogoNativeDragStart}
                   draggable={false}
@@ -614,9 +652,7 @@ export function Sidebar() {
                     opacity: logoCarry.hidden ? 0 : 1,
                     cursor: logoCursor,
                   }}
-                >
-                  🦞
-                </span>
+                />
               </Link>
               <button
                 onClick={() => setCollapsed(false)}
@@ -636,8 +672,9 @@ export function Sidebar() {
                   onDragStart={handleLogoNativeDragStart}
                   draggable={false}
                 >
-                  <span
-                    className="relative inline-block transition-opacity duration-300"
+                  <BrandMark
+                    className="transition-opacity duration-300"
+                    data-openclaw-logo-anchor="true"
                     onMouseDown={handleLogoMouseDown}
                     onDragStart={handleLogoNativeDragStart}
                     draggable={false}
@@ -648,12 +685,10 @@ export function Sidebar() {
                       opacity: logoCarry.hidden ? 0 : 1,
                       cursor: logoCursor,
                     }}
-                  >
-                    🦞
-                  </span>
+                  />
                   <div>
-                    <div className="text-sm font-bold text-[var(--text)] tracking-wide">OPENCLAW</div>
-                    <div className="text-[10px] text-[var(--text-muted)] tracking-wider">BOT DASHBOARD</div>
+                    <div className="text-sm font-bold text-[var(--text)] tracking-wide">{BATCAVE_BRAND.title}</div>
+                    <div className="text-[10px] text-[var(--text-muted)] tracking-wider">{BATCAVE_BRAND.subtitle}</div>
                   </div>
                 </Link>
                 <button

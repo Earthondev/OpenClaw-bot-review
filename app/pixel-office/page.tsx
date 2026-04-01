@@ -32,6 +32,7 @@ import { loadCharacterPNGs, loadWallPNG } from '@/lib/pixel-office/sprites/pngLo
 import { useI18n } from '@/lib/i18n'
 import { EditorToolbar } from './components/EditorToolbar'
 import { EditActionBar } from './components/EditActionBar'
+import { BatAvatar } from '@/app/components/bat-avatar'
 import {
   AgentCard,
   type AgentCardAgent,
@@ -720,7 +721,7 @@ export default function PixelOfficePage() {
   // Load photograph for right room wall
   useEffect(() => {
     const img = new Image()
-    img.src = '/assets/pixel-office/photograph.webp'
+    img.src = '/assets/pixel-office/photograph.png'
     img.onload = () => { photographRef.current = img }
   }, [])
 
@@ -814,11 +815,11 @@ export default function PixelOfficePage() {
           if (prev && prev !== agent.state) {
             if (agent.state === 'working' && prev !== 'working') {
               const bid = Date.now() + Math.random()
-              setBroadcasts(b => [...b, { id: bid, emoji: agent.emoji, text: `${agent.emoji} ${agent.name} ${t('pixelOffice.broadcast.online')}` }])
+              setBroadcasts(b => [...b, { id: bid, emoji: agent.emoji, text: `${agent.name} ${t('pixelOffice.broadcast.online')}` }])
               setTimeout(() => setBroadcasts(b => b.filter(x => x.id !== bid)), 5000)
             } else if (agent.state === 'offline' && prev === 'working') {
               const bid = Date.now() + Math.random()
-              setBroadcasts(b => [...b, { id: bid, emoji: agent.emoji, text: `${agent.emoji} ${agent.name} ${t('pixelOffice.broadcast.offline')}` }])
+              setBroadcasts(b => [...b, { id: bid, emoji: agent.emoji, text: `${agent.name} ${t('pixelOffice.broadcast.offline')}` }])
               setTimeout(() => setBroadcasts(b => b.filter(x => x.id !== bid)), 5000)
             }
           }
@@ -1690,7 +1691,13 @@ export default function PixelOfficePage() {
             ? { style: { animationDuration: isTempWorker ? '0.9s' : '1.3s' } }
             : {})}
         >
-          <span className={mobileGrid ? 'shrink-0 text-sm' : ''}>{agent.emoji}</span>
+          <BatAvatar
+            agentId={agent.agentId}
+            name={agent.name}
+            emoji={agent.emoji}
+            size={mobileGrid ? 18 : 20}
+            className="shrink-0"
+          />
           {isTempWorker ? (
             <span className={`min-w-0 flex flex-col justify-center ${mobileGrid ? 'max-w-[4.6rem]' : 'max-w-[5.8rem]'} leading-none`}>
               <span className={`${mobileGrid ? 'text-[10px]' : 'text-[12px]'} truncate`}>{t('pixelOffice.tempWorker')}</span>
@@ -1768,7 +1775,7 @@ export default function PixelOfficePage() {
             {soundOn && (
               <button onClick={skipToNextTrack}
                 className="px-3 py-1.5 text-xs rounded-lg border transition-colors bg-[var(--card)] border-[var(--border)] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--accent)]"
-                title="下一首">
+                title="เพลงถัดไป">
                 ⏭
               </button>
             )}
@@ -1875,7 +1882,14 @@ export default function PixelOfficePage() {
             ) : (
               <>
                 <div className="flex items-center gap-1.5 mb-1.5">
-                  <span>{hoveredInfo.agent?.emoji}</span>
+                  {hoveredInfo.agent && (
+                    <BatAvatar
+                      agentId={hoveredInfo.agent.agentId}
+                      name={hoveredInfo.agent.name}
+                      emoji={hoveredInfo.agent.emoji}
+                      size={20}
+                    />
+                  )}
                   <span className="font-semibold text-[var(--text)]">{hoveredInfo.isSubagent ? t('pixelOffice.tempWorker') : hoveredInfo.agent?.name}</span>
                 </div>
                 {hoveredInfo.isSubagent ? (
@@ -1926,7 +1940,7 @@ export default function PixelOfficePage() {
               </button>
               <div className="flex items-center gap-1.5 mb-1.5">
                 <span>🖥️</span>
-                <span className="font-semibold text-[var(--text)]">Gateway Server</span>
+                <span className="font-semibold text-[var(--text)]">ศูนย์ควบคุม Gateway</span>
               </div>
               <div className="space-y-0.5 text-[var(--text-muted)]">
                 <div className="flex justify-between gap-4">
@@ -2061,7 +2075,7 @@ export default function PixelOfficePage() {
                         {provider.usedBy.length > 0 && (
                           <div className="flex gap-1">
                             {provider.usedBy.map(a => (
-                              <span key={a.id} className="text-sm" title={a.name}>{a.emoji}</span>
+                              <BatAvatar key={a.id} agentId={a.id} name={a.name} emoji={a.emoji} size={18} title={a.name} />
                             ))}
                           </div>
                         )}
@@ -2105,14 +2119,14 @@ export default function PixelOfficePage() {
                 ) : (
                   <div className="space-y-2">
                     {ranked.map((a, i) => (
-                      <div key={a.agentId}>
-                        <div className="flex items-center justify-between text-xs mb-0.5">
-                          <span className="flex items-center gap-1.5">
-                            <span className="text-[var(--text-muted)] w-4">{i + 1}.</span>
-                            <span>{a.emoji}</span>
-                            <span className="text-[var(--text)]">{a.name}</span>
-                          </span>
-                          <span className="text-[var(--text)] font-mono">{formatTokens(a.tokens)}</span>
+                        <div key={a.agentId}>
+                          <div className="flex items-center justify-between text-xs mb-0.5">
+                            <span className="flex items-center gap-1.5">
+                              <span className="text-[var(--text-muted)] w-4">{i + 1}.</span>
+                              <BatAvatar agentId={a.agentId} name={a.name} emoji={a.emoji} size={18} />
+                              <span className="text-[var(--text)]">{a.name}</span>
+                            </span>
+                            <span className="text-[var(--text)] font-mono">{formatTokens(a.tokens)}</span>
                         </div>
                         <div className="w-full h-2 rounded-full bg-[var(--bg)] overflow-hidden">
                           <div className="h-full rounded-full bg-emerald-500 transition-all" style={{ width: `${(a.tokens / maxTokens) * 100}%` }} />
@@ -2129,13 +2143,15 @@ export default function PixelOfficePage() {
         {/* Activity heatmap panel (clock click) */}
         {showActivityHeatmap && !isEditMode && (() => {
           const agentGrids = activityHeatmapRef.current
-          const dayLabels = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+          const dayLabels = locale === 'zh-TW'
+            ? ['จ.', 'อ.', 'พ.', 'พฤ.', 'ศ.', 'ส.', 'อา.']
+            : ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
           const hourLabels = [0, 3, 6, 9, 12, 15, 18, 21]
           const cellSize = 14
           const gap = 2
           const leftPad = 36
           const topPad = 20
-          const colors = ['#161b22', '#0e4429', '#006d32', '#26a641', '#39d353']
+          const colors = ['#10151d', '#3f2b08', '#7a5313', '#b37a1d', '#d7a647']
           const svgW = leftPad + 24 * (cellSize + gap)
           const svgH = topPad + 7 * (cellSize + gap)
           return (
@@ -2158,7 +2174,7 @@ export default function PixelOfficePage() {
                       return (
                         <div key={agentId}>
                           <div className="flex items-center gap-1.5 mb-1.5">
-                            <span>{agent?.emoji || '🤖'}</span>
+                            <BatAvatar agentId={agent?.agentId || agentId} name={agent?.name || agentId} emoji={agent?.emoji || '🤖'} size={18} />
                             <span className="text-xs font-semibold text-[var(--text)]">{agent?.name || agentId}</span>
                           </div>
                           <div className="overflow-x-auto">
@@ -2197,7 +2213,7 @@ export default function PixelOfficePage() {
             <div className={modalOverlayClass} onClick={() => setShowPhonePanel(false)}>
               <div className={modalPanelClass("w-80")} onClick={e => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-3">
-                  <span className="font-semibold text-[var(--text)]">📱 OpenClaw Latest</span>
+                  <span className="font-semibold text-[var(--text)]">📱 สถานะ OpenClaw ล่าสุด</span>
                   <button onClick={() => setShowPhonePanel(false)} className="text-[var(--text-muted)] hover:text-[var(--text)] text-lg leading-none">×</button>
                 </div>
                 {!info && versionLoading ? (
@@ -2252,7 +2268,7 @@ export default function PixelOfficePage() {
                           <div className="flex items-center justify-between text-xs mb-0.5">
                             <span className="flex items-center gap-1.5">
                               <span className="w-5 text-center">{medal}</span>
-                              <span>{a.emoji}</span>
+                              <BatAvatar agentId={a.agentId} name={a.name} emoji={a.emoji} size={18} />
                               <span className="text-[var(--text)]">{a.name}</span>
                             </span>
                             <span className="font-mono font-semibold" style={{ color: barColor }}>{a.idlePercent}%</span>

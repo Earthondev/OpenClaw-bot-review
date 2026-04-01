@@ -52,7 +52,7 @@ export interface ContributionDay { count: number; date: string }
 export interface ContributionWeek { days: ContributionDay[] }
 export interface ContributionData { weeks: ContributionWeek[]; username: string }
 
-const HEATMAP_COLORS = ['#ebedf0', '#9be9a8', '#40c463', '#30a14e', '#216e39']
+const HEATMAP_COLORS = ['#0f141c', '#183148', '#1e5b7d', '#2aa0c8', '#d2a440']
 
 function contributionLevel(count: number): number {
   if (count === 0) return 0
@@ -80,7 +80,7 @@ function renderContributionHeatmap(
   const cellH = (areaH - 6 * gapPx) / 7
 
   // Fill background so gaps between cells are consistent
-  ctx.fillStyle = '#ffffff'
+  ctx.fillStyle = '#0a1118'
   ctx.fillRect(Math.round(areaX), Math.round(areaY), Math.round(areaW), Math.round(areaH))
 
   for (let w = 0; w < data.weeks.length; w++) {

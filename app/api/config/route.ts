@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import fs from "fs";
 import path from "path";
 import { getConfigCache, setConfigCache } from "@/lib/config-cache";
+import { getBatcavePersona } from "@/lib/batcave";
 import { OPENCLAW_CONFIG_PATH, OPENCLAW_HOME } from "@/lib/openclaw-paths";
 import { shouldHidePlatformChannel } from "@/lib/platforms";
 
@@ -351,6 +352,7 @@ export async function GET() {
       const identityName = readIdentityName(id, agent.agentDir, agent.workspace);
       const name = identityName || agent.name || id;
       const emoji = agent.identity?.emoji || "🤖";
+      const persona = getBatcavePersona(id, name, emoji);
       const model = normalizeModelRef(agent.model, defaultModel);
 
       // 查找绑定的平台
@@ -416,7 +418,7 @@ export async function GET() {
         }
       }
 
-      return { id, name, emoji, model, platforms };
+      return { id, name: persona.name, emoji: persona.emoji, model, platforms };
     }));
 
     // 为每个 agent 添加 session 状态

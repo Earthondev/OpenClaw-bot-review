@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { buildGatewayUrl } from "@/lib/gateway-url";
 import { getPlatformDisplayName } from "@/lib/platforms";
+import { BatAvatar } from "./bat-avatar";
 
 export interface AgentPlatform {
   name: string;
@@ -130,10 +131,10 @@ function ErrorStatusWithCopy({ error, className }: { error?: string; className?:
               onClick={onCopy}
               className="rounded border border-[var(--border)] px-1.5 py-0.5 text-[10px] text-[var(--text-muted)] hover:text-[var(--text)] hover:border-[var(--accent)]"
             >
-              {copyState === "copied" ? "已复制" : "复制"}
+              {copyState === "copied" ? "คัดลอกแล้ว" : "คัดลอก"}
             </button>
             {copyState === "failed" && (
-              <span className="text-[10px] text-amber-300">复制失败</span>
+              <span className="text-[10px] text-amber-300">คัดลอกไม่สำเร็จ</span>
             )}
           </span>
           <span className="whitespace-pre-wrap break-words">{errorText}</span>
@@ -429,7 +430,7 @@ export function AgentCard({
       className="rounded-xl border border-[var(--border)] bg-[var(--card)] p-2.5 hover:border-[var(--accent)] transition-colors"
     >
       <div className="flex items-center gap-2 mb-1.5">
-        <span className="text-xl">{agent.emoji}</span>
+        <BatAvatar agentId={agent.id} name={agent.name} emoji={agent.emoji} size={34} />
         <div className="flex-1">
           <h3 className="text-sm font-semibold text-[var(--text)]">{agent.name} <span className="font-normal text-[var(--text-muted)]">({agent.id})</span></h3>
         </div>

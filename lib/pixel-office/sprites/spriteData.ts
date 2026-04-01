@@ -400,6 +400,297 @@ export const LAMP_SPRITE: SpriteData = (() => {
   ]
 })()
 
+/** Command console: 32x16 (2 tiles wide, 1 tile tall) */
+export const COMMAND_CONSOLE_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#1D2437'
+  const EDGE = '#3E4B6C'
+  const SCREEN = '#2AC0FF'
+  const GLOW = '#A4ECFF'
+  const PANEL = '#0A101B'
+  const GOLD = '#D2A63C'
+  const rows: string[][] = Array.from({ length: 16 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(2, 2, 28, 9, FRAME)
+  fill(3, 3, 26, 7, EDGE)
+  fill(4, 4, 7, 4, PANEL)
+  fill(12, 4, 8, 4, PANEL)
+  fill(21, 4, 7, 4, PANEL)
+  fill(5, 5, 5, 2, SCREEN)
+  fill(13, 5, 6, 2, SCREEN)
+  fill(22, 5, 5, 2, SCREEN)
+  fill(7, 4, 1, 1, GLOW)
+  fill(15, 4, 2, 1, GLOW)
+  fill(24, 4, 1, 1, GLOW)
+  fill(6, 9, 20, 1, GOLD)
+  fill(3, 11, 26, 2, PANEL)
+  fill(4, 13, 3, 2, FRAME)
+  fill(25, 13, 3, 2, FRAME)
+  return rows
+})()
+
+/** Batcomputer: 64x32 (4 tiles wide, 2 tiles tall) */
+export const BATCOMPUTER_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#171E2D'
+  const EDGE = '#3F4C70'
+  const PANEL = '#09111C'
+  const SCREEN = '#29C6FF'
+  const SCREEN_DIM = '#125B86'
+  const GLOW = '#B5F3FF'
+  const GOLD = '#D0A436'
+  const BASE = '#0B0F18'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 64 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(4, 2, 56, 9, FRAME)
+  fill(5, 3, 54, 7, EDGE)
+  for (const x of [8, 21, 34, 47]) {
+    fill(x, 4, 10, 4, PANEL)
+    fill(x + 1, 5, 8, 2, SCREEN)
+    fill(x + 3, 4, 2, 1, GLOW)
+  }
+  fill(16, 11, 32, 2, GOLD)
+  fill(10, 13, 44, 8, FRAME)
+  fill(11, 14, 42, 5, EDGE)
+  fill(12, 15, 40, 3, PANEL)
+  for (const x of [14, 20, 26, 32, 38, 44]) {
+    fill(x, 16, 4, 1, SCREEN_DIM)
+    fill(x + 1, 15, 2, 1, SCREEN)
+  }
+  fill(12, 19, 40, 2, BASE)
+  fill(14, 21, 8, 5, FRAME)
+  fill(42, 21, 8, 5, FRAME)
+  fill(23, 21, 18, 6, EDGE)
+  fill(27, 22, 10, 3, PANEL)
+  fill(28, 23, 8, 1, GOLD)
+  fill(15, 26, 7, 3, BASE)
+  fill(42, 26, 7, 3, BASE)
+  fill(24, 27, 16, 3, BASE)
+  return rows
+})()
+
+/** Holographic strategy table: 32x32 (2 tiles wide, 2 tiles tall) */
+export const HOLO_TABLE_SPRITE: SpriteData = (() => {
+  const BG = _
+  const BASE = '#34210F'
+  const BRASS = '#B8832B'
+  const GLASS = '#30D6FF'
+  const GLOW = '#A6F2FF'
+  const SHADOW = '#0A1320'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(9, 4, 14, 4, GLASS)
+  fill(7, 8, 18, 3, GLOW)
+  fill(6, 11, 20, 4, GLASS)
+  fill(8, 15, 16, 2, BRASS)
+  fill(10, 17, 12, 5, BASE)
+  fill(13, 22, 6, 5, BRASS)
+  fill(9, 27, 14, 2, SHADOW)
+  fill(11, 29, 10, 2, SHADOW)
+  return rows
+})()
+
+/** Batsuit display case: 16x32 (1 tile wide, 2 tiles tall) */
+export const BATSUIT_DISPLAY_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#52627C'
+  const GLASS = '#D4ECFF'
+  const GLASS_DIM = '#87A9C4'
+  const SUIT = '#0C1119'
+  const BLUE = '#203A70'
+  const GOLD = '#D3A73B'
+  const BASE = '#0B0F18'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 16 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(1, 1, 14, 26, FRAME)
+  fill(2, 2, 12, 22, GLASS)
+  fill(3, 3, 10, 20, GLASS_DIM)
+  fill(6, 5, 4, 2, SUIT)
+  fill(5, 7, 6, 6, SUIT)
+  fill(4, 10, 8, 9, SUIT)
+  fill(6, 12, 4, 1, BLUE)
+  fill(6, 16, 4, 1, GOLD)
+  fill(5, 19, 2, 4, SUIT)
+  fill(9, 19, 2, 4, SUIT)
+  fill(2, 27, 12, 3, BASE)
+  return rows
+})()
+
+/** Trophy case: 32x32 (2 tiles wide, 2 tiles tall) */
+export const TROPHY_CASE_SPRITE: SpriteData = (() => {
+  const BG = _
+  const WOOD = '#312212'
+  const EDGE = '#705232'
+  const GLASS = '#CBE7F8'
+  const GOLD = '#D3A63C'
+  const STEEL = '#99A9B7'
+  const BASE = '#15110C'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(2, 2, 28, 24, WOOD)
+  fill(3, 3, 26, 20, EDGE)
+  fill(4, 4, 24, 16, GLASS)
+  fill(7, 8, 4, 5, GOLD)
+  fill(8, 6, 2, 2, GOLD)
+  fill(14, 9, 4, 4, STEEL)
+  fill(20, 8, 5, 5, GOLD)
+  fill(21, 6, 3, 2, GOLD)
+  fill(4, 20, 24, 2, WOOD)
+  fill(5, 23, 4, 5, BASE)
+  fill(23, 23, 4, 5, BASE)
+  return rows
+})()
+
+/** Bat-signal wall panel: 32x16 (2 tiles wide, 1 tile tall) */
+export const BATSIGNAL_PANEL_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#283040'
+  const EDGE = '#4C5B76'
+  const SCREEN = '#111827'
+  const GOLD = '#D7AF43'
+  const LIGHT = '#F7E6A2'
+  const rows: string[][] = Array.from({ length: 16 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(1, 1, 30, 12, FRAME)
+  fill(2, 2, 28, 10, EDGE)
+  fill(3, 3, 26, 8, SCREEN)
+  fill(9, 4, 14, 1, GOLD)
+  fill(7, 5, 18, 2, GOLD)
+  fill(5, 7, 22, 1, GOLD)
+  fill(10, 8, 4, 1, LIGHT)
+  fill(18, 8, 4, 1, LIGHT)
+  fill(12, 9, 8, 1, GOLD)
+  return rows
+})()
+
+/** Oracle terminal: 32x16 (2 tiles wide, 1 tile tall) */
+export const ORACLE_TERMINAL_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#1A2232'
+  const EDGE = '#485A7D'
+  const PANEL = '#08111C'
+  const CYAN = '#25D4FF'
+  const PURPLE = '#9B63FF'
+  const GLOW = '#CBB6FF'
+  const GOLD = '#D0A640'
+  const rows: string[][] = Array.from({ length: 16 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(2, 2, 28, 9, FRAME)
+  fill(3, 3, 26, 7, EDGE)
+  fill(5, 4, 6, 4, PANEL)
+  fill(12, 4, 8, 4, PANEL)
+  fill(21, 4, 6, 4, PANEL)
+  fill(6, 5, 4, 2, PURPLE)
+  fill(13, 5, 6, 2, CYAN)
+  fill(22, 5, 4, 2, PURPLE)
+  fill(7, 4, 1, 1, GLOW)
+  fill(15, 4, 2, 1, GLOW)
+  fill(23, 4, 1, 1, GLOW)
+  fill(6, 8, 20, 1, GOLD)
+  fill(4, 11, 24, 2, PANEL)
+  fill(5, 13, 3, 2, FRAME)
+  fill(24, 13, 3, 2, FRAME)
+  return rows
+})()
+
+/** Alfred prep station: 32x32 (2 tiles wide, 2 tiles tall) */
+export const ALFRED_STATION_SPRITE: SpriteData = (() => {
+  const BG = _
+  const STEEL = '#5E687A'
+  const EDGE = '#8E9AAE'
+  const COUNTER = '#1F2634'
+  const GOLD = '#D2A341'
+  const WHITE = '#E8EEF7'
+  const RED = '#C94E55'
+  const BLUE = '#5AA7E4'
+  const WOOD = '#46321D'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(3, 6, 26, 18, STEEL)
+  fill(4, 7, 24, 16, EDGE)
+  fill(5, 8, 22, 4, COUNTER)
+  fill(6, 9, 4, 2, GOLD)
+  fill(12, 8, 8, 4, WHITE)
+  fill(14, 9, 4, 2, RED)
+  fill(15, 8, 2, 4, RED)
+  fill(22, 8, 3, 4, BLUE)
+  fill(8, 13, 16, 2, WOOD)
+  fill(6, 15, 8, 6, COUNTER)
+  fill(18, 15, 8, 6, COUNTER)
+  fill(8, 24, 4, 5, WOOD)
+  fill(20, 24, 4, 5, WOOD)
+  fill(12, 12, 4, 1, GOLD)
+  fill(19, 10, 4, 1, WHITE)
+  return rows
+})()
+
+/** Robin training dummy: 16x32 (1 tile wide, 2 tiles tall) */
+export const TRAINING_DUMMY_SPRITE: SpriteData = (() => {
+  const BG = _
+  const METAL = '#5A667A'
+  const BASE = '#222B3A'
+  const PAD = '#7A2C2F'
+  const PAD_LIGHT = '#C75557'
+  const GOLD = '#D0A23E'
+  const rows: string[][] = Array.from({ length: 32 }, () => Array.from({ length: 16 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(7, 4, 2, 4, METAL)
+  fill(5, 8, 6, 8, PAD)
+  fill(6, 9, 4, 5, PAD_LIGHT)
+  fill(4, 16, 8, 6, PAD)
+  fill(6, 17, 4, 3, PAD_LIGHT)
+  fill(7, 22, 2, 5, METAL)
+  fill(4, 27, 8, 2, BASE)
+  fill(5, 29, 6, 2, GOLD)
+  return rows
+})()
+
+/** Lucius gadget bench: 32x16 (2 tiles wide, 1 tile tall) */
+export const GADGET_BENCH_SPRITE: SpriteData = (() => {
+  const BG = _
+  const FRAME = '#242A37'
+  const EDGE = '#53607A'
+  const PANEL = '#101720'
+  const CYAN = '#2CD1FF'
+  const GOLD = '#D2A53D'
+  const RED = '#D76163'
+  const WHITE = '#E3EDF8'
+  const rows: string[][] = Array.from({ length: 16 }, () => Array.from({ length: 32 }, () => BG))
+  const fill = (x: number, y: number, w: number, h: number, c: string) => {
+    for (let yy = y; yy < y + h; yy++) for (let xx = x; xx < x + w; xx++) rows[yy][xx] = c
+  }
+  fill(2, 3, 28, 8, FRAME)
+  fill(3, 4, 26, 6, EDGE)
+  fill(4, 5, 24, 4, PANEL)
+  fill(5, 6, 6, 2, CYAN)
+  fill(13, 5, 5, 3, WHITE)
+  fill(20, 6, 6, 2, RED)
+  fill(12, 9, 10, 1, GOLD)
+  fill(4, 11, 4, 3, FRAME)
+  fill(24, 11, 4, 3, FRAME)
+  fill(14, 6, 3, 1, CYAN)
+  fill(21, 5, 2, 1, WHITE)
+  return rows
+})()
+
 // ── Speech Bubble Sprites ───────────────────────────────────────
 
 /** Permission bubble: white square with "..." in amber, and a tail pointer (11x13) */

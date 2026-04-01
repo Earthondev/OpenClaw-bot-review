@@ -15,7 +15,8 @@ let bgmTracks: string[] = []
 let bgmLastIndex = -1
 let bgmTracksLoaded = false
 
-const BGM_VOLUME = 0.28
+const BGM_VOLUME = 0.22
+const DEFAULT_BATCAVE_TRACK = '/assets/pixel-office/batcave-night-watch.mp3'
 
 async function loadTracks(): Promise<void> {
   if (bgmTracksLoaded) return
@@ -32,7 +33,7 @@ async function loadTracks(): Promise<void> {
 }
 
 function pickNextTrack(): string {
-  if (bgmTracks.length === 0) return '/assets/pixel-office/pixel-adventure.mp3'
+  if (bgmTracks.length === 0) return DEFAULT_BATCAVE_TRACK
   if (bgmTracks.length === 1) return bgmTracks[0]
   let idx: number
   do { idx = Math.floor(Math.random() * bgmTracks.length) } while (idx === bgmLastIndex)
@@ -136,7 +137,7 @@ export async function playBackgroundMusic(): Promise<void> {
     const audio = getBgmAudio()
     if (!audio) return
     // If tracks loaded after audio element was created, update src to a proper random track
-    if (bgmTracks.length > 0 && audio.src.includes('pixel-adventure') && bgmTracks.length > 1) {
+    if (bgmTracks.length > 0 && (audio.src.includes('pixel-adventure') || audio.src.includes('batcave-night-watch')) && bgmTracks.length > 1) {
       audio.src = pickNextTrack()
       audio.load()
     }

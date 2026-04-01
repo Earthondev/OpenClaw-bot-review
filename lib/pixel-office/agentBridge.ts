@@ -1,4 +1,5 @@
 import { OfficeState } from './engine/officeState'
+import { getBatcavePixelVariant } from '@/lib/batcave'
 
 export interface SubagentInfo {
   toolId: string
@@ -67,16 +68,15 @@ export function syncAgentsToOffice(
       // Spawn at door if agent was previously offline or is brand new
       const wasOffline = prevAgentStates.get(activity.agentId) === 'offline'
       const isNew = !prevAgentStates.has(activity.agentId)
-      office.addAgent(charId, undefined, undefined, undefined, undefined, wasOffline || isNew)
+      const preferredPalette = getBatcavePixelVariant(activity.agentId, activity.name, activity.emoji)
+      office.addAgent(charId, preferredPalette, 0, undefined, undefined, wasOffline || isNew)
     }
 
     // Set label, avoiding duplicated values like "main (main)"
     const ch = office.characters.get(charId)
     if (ch) {
       const displayName = activity.name?.trim()
-      ch.label = displayName && displayName !== activity.agentId
-        ? `${displayName} (${activity.agentId})`
-        : activity.agentId
+      ch.label = displayName || activity.agentId
     }
 
     switch (activity.state) {

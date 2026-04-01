@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server'
 import { promises as fs, existsSync } from 'fs'
 import path from 'path'
+import { getBatcavePersona } from '@/lib/batcave'
 import { parseJsonText } from '@/lib/json'
 import { OPENCLAW_AGENTS_DIR, OPENCLAW_CONFIG_PATH, OPENCLAW_HOME } from '@/lib/openclaw-paths'
 
@@ -785,6 +786,11 @@ export async function GET() {
         const liveCronJobs = await loadCronJobs(config)
 
         for (const agent of agentList) {
+          const persona = getBatcavePersona(
+            agent.id,
+            agent.name || agent.id,
+            agent.identity?.emoji || agent.emoji || '🤖',
+          )
           let lastActive = 0
           let agentSessionsDir = ''
 
@@ -831,8 +837,8 @@ export async function GET() {
 
           agents.push({
             agentId: agent.id,
-            name: agent.name || agent.id,
-            emoji: agent.identity?.emoji || agent.emoji || '🤖',
+            name: persona.name,
+            emoji: persona.emoji,
             state,
             lastActive,
             subagents,

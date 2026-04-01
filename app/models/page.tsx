@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "@/lib/i18n";
+import { BatAvatar } from "@/app/components/bat-avatar";
 
 interface Model {
   id: string;
@@ -260,8 +261,9 @@ export default function ModelsPage() {
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-[var(--text-muted)] mr-1">{t("agent.inUse")}</span>
                   {provider.usedBy.map((a) => (
-                    <span key={a.id} title={a.id} className="px-2 py-0.5 rounded-full bg-[var(--bg)] text-xs font-medium">
-                      {a.emoji} {a.name || a.id}
+                    <span key={a.id} title={a.id} className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-[var(--bg)] text-xs font-medium">
+                      <BatAvatar agentId={a.id} name={a.name} emoji={a.emoji} size={18} />
+                      <span>{a.name || a.id}</span>
                     </span>
                   ))}
                 </div>

@@ -1,0 +1,72 @@
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 54ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 44ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 38ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 36ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 44ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 52ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+Error: ENOENT: no such file or directory, open '/Users/earthondev/Desktop/OpenClaw-bot-review/.next/standalone/.next/server/pages-manifest.json'
+    at ignore-listed frames {
+  errno: -2,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: '/Users/earthondev/Desktop/OpenClaw-bot-review/.next/standalone/.next/server/pages-manifest.json'
+}
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 54ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 31ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 40ms
+▲ Next.js 16.1.6
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+
+✓ Starting...
+✓ Ready in 46ms

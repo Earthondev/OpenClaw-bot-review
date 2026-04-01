@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { useI18n } from "@/lib/i18n";
+import { BatAvatar } from "@/app/components/bat-avatar";
 
 function resolveGatewayUrl(url?: string): string | undefined {
   if (!url || typeof window === "undefined") return url;
@@ -68,12 +69,22 @@ export function GatewayStatus({ compact = false, className = "", hideIconOnMobil
             : "bg-cyan-500/20 text-cyan-300 border-cyan-500/30"
         }`}
       >
-        {compact ? "GW" : hideIconOnMobile ? (
+        {compact ? (
+          "GW"
+        ) : hideIconOnMobile ? (
           <>
             <span className="md:hidden">Gateway</span>
-            <span className="hidden md:inline">🦞 Gateway</span>
+            <span className="hidden md:inline-flex md:items-center md:gap-1.5">
+              <BatAvatar agentId="alfred" name="อัลเฟรด" size={18} />
+              <span>Gateway</span>
+            </span>
           </>
-        ) : "🦞 Gateway"}
+        ) : (
+          <span className="inline-flex items-center gap-1.5">
+            <BatAvatar agentId="alfred" name="อัลเฟรด" size={18} />
+            <span>Gateway</span>
+          </span>
+        )}
         <span className="opacity-50 text-[10px]">↗</span>
       </a>
       {showVersionTip && (

@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import { useI18n } from "@/lib/i18n";
 import { GatewayStatus } from "./gateway-status";
+import { BatAvatar } from "./components/bat-avatar";
 import {
   AgentCard,
   ModelBadge,
@@ -219,6 +220,7 @@ function ResponseTrendChart({ data, height = 180, t }: { data: DayStat[]; height
 
 export default function Home() {
   const { t, locale } = useI18n();
+  const localeTag = locale === "zh-TW" ? "th-TH" : locale === "zh" ? "zh-CN" : locale;
   const [data, setData] = useState<ConfigData | null>(cachedHomeData);
   const [error, setError] = useState<string | null>(cachedHomeError);
   const [refreshInterval, setRefreshInterval] = useState(cachedHomeRefreshInterval);
@@ -678,7 +680,13 @@ export default function Home() {
               .filter(a => a.state !== "offline")
               .map(agent => (
                 <div key={agent.agentId} className="flex items-start gap-3 p-3 rounded-lg bg-[var(--bg)] border border-[var(--border)]">
-                  <span className="text-lg leading-none mt-0.5">{agent.emoji || "🤖"}</span>
+                  <BatAvatar
+                    agentId={agent.agentId}
+                    name={agent.name}
+                    emoji={agent.emoji}
+                    size={32}
+                    className="mt-0.5"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <span className="text-sm font-medium text-[var(--text)]">{agent.name}</span>
@@ -746,7 +754,7 @@ export default function Home() {
                               )}
                               {cron.nextRunAt ? (
                                 <span>
-                                  {t("home.agentTaskCronNextRun")} {new Date(cron.nextRunAt).toLocaleTimeString(locale === "zh" ? "zh-CN" : locale, { hour: "2-digit", minute: "2-digit" })}
+                                  {t("home.agentTaskCronNextRun")} {new Date(cron.nextRunAt).toLocaleTimeString(localeTag, { hour: "2-digit", minute: "2-digit" })}
                                 </span>
                               ) : null}
                             </div>
@@ -758,7 +766,7 @@ export default function Home() {
                     )}
                   </div>
                   <div className="text-[10px] text-[var(--text-muted)] whitespace-nowrap">
-                    {agent.lastActive ? new Date(agent.lastActive).toLocaleTimeString(locale === "zh" ? "zh-CN" : locale, { hour: "2-digit", minute: "2-digit" }) : ""}
+                    {agent.lastActive ? new Date(agent.lastActive).toLocaleTimeString(localeTag, { hour: "2-digit", minute: "2-digit" }) : ""}
                   </div>
                 </div>
               ))}
@@ -842,7 +850,8 @@ export default function Home() {
                   <div className="flex flex-wrap gap-2">
                     {group.agents.map((a) => (
                       <span key={a.id} className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs bg-[var(--card)] border border-[var(--border)]">
-                        {a.emoji} {a.name}
+                        <BatAvatar agentId={a.id} name={a.name} emoji={a.emoji} size={18} />
+                        <span>{a.name}</span>
                       </span>
                     ))}
                   </div>

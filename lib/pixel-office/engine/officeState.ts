@@ -140,6 +140,61 @@ const PHOTO_COMMENTS_ZH_TW = [
   '不愧是台灣之光', '這是決定性瞬間！！！', '這個構圖絕了！',
 ]
 
+const CODE_SNIPPETS_TH = [
+  'if (...)', 'else {', 'for (...)', 'return', 'async', 'await', 'try {', 'catch', 'import',
+  'const x =', '=> {', '...args', '() => {}', '[...arr]', '{ ...obj }', '===', '?.', '??',
+  'def fn():', 'self.', 'yield', 'lambda x:', '@decorator', '**kwargs', 'except:', 'raise',
+  'prompt:', 'tokens++', 'model.chat()', 'agent.run()', 'stream()', 'tool_use', 'thinking...',
+  'chat.completions', 'role: "user"', 'max_tokens=', 'temperature=0.7', 'messages.append()',
+  'stop_reason', 'tool_calls[]', 'system_prompt', 'embedding()', 'rag.search()', 'context[]',
+  'You are a...', 'Step by step', 'Let me think', 'In summary:', 'For example:',
+  'Please fix...', 'Refactor this', 'Add tests for', 'Explain why', 'Review this PR',
+  'LGTM', 'RTFM', 'WIP', 'FIXME:', 'TODO:', 'HACK:', 'nit:', '// why?!',
+  'git push -f', 'npm i npm i', 'works on my💻', 'ship it!', 'rebase hell', 'merge conflict',
+  '// อย่าลบบรรทัดนี้', '// รันได้ก็พอ', '// เดี๋ยวค่อยเก็บงาน', 'เดี๋ยวก่อนนะ', 'ยังหาสาเหตุไม่เจอ',
+  'อันนี้ไม่ใช่บั๊ก', 'สเปกเปลี่ยนอีกแล้ว', 'ขึ้นโปรดักชันเลย', 'อย่าแตะไฟล์นี้', 'รีสตาร์ตก่อน',
+  'เทสต์พังอีกแล้ว', 'ใครลบโค้ดฉัน', '500 มาอีกแล้ว', 'ค่อย refactor ทีหลัง', 'ขอ coffee ก่อน',
+  'openclaw status', 'openclaw gateway start', 'openclaw gateway restart',
+  'openclaw logs', 'openclaw doctor', 'openclaw config get',
+  'openclaw message send', 'openclaw skills', 'openclaw models', 'openclaw update',
+]
+
+const SRE_BLACKWORDS_TH = [
+  'เช็ก dashboard ก่อน',
+  'ดู P99 ก่อน',
+  'ไล่ log ของ gateway',
+  'ลอง reproduce ก่อน',
+  'เปิด rate limit ไว้ก่อน',
+  'เริ่ม circuit break',
+  'ลดโหลดเส้นหลักไว้ก่อน',
+  'ขยายเครื่องก่อน',
+  'รีสตาร์ท gateway',
+  'ต้องประคอง SLA',
+  'กด fallback ก่อน',
+  'ดู error rate',
+  'ดู timeout rate',
+  'ช้าเกิน threshold แล้ว',
+  'error budget ใกล้หมด',
+  'เรียกคน on-call',
+  'แจ้งทีมงานก่อน',
+  'เริ่มเปิด war room',
+  'กำลังกู้ระบบ...',
+  'ห้ามให้ล่มอีก',
+]
+
+const PHOTO_COMMENTS_TH = [
+  'ภาพนี้ดีมาก',
+  'คอมโพสดีสุดๆ',
+  'แสงสวยมาก',
+  'โทนภาพกำลังดี',
+  'เอาไปทำปกได้เลย',
+  'ฟีลหนังชัดมาก',
+  'มุมนี้เล่าเรื่องเก่ง',
+  'ภาพนี้มีอารมณ์',
+  'จังหวะกดดีมาก',
+  'นี่แหละช็อตเด็ด',
+]
+
 const CODE_SNIPPETS_ZH = [
   // JS/TS
   'if (...)', 'else {', 'for (...)', 'return', 'async', 'await', 'try {', 'catch', 'import',
@@ -333,27 +388,27 @@ const PHOTO_COMMENTS_EN = [
 ]
 
 function getCodeSnippets(locale: OfficeLocale): string[] {
-  if (locale === 'zh-TW') return CODE_SNIPPETS_ZH_TW
+  if (locale === 'zh-TW') return CODE_SNIPPETS_TH
   if (locale === 'en') return CODE_SNIPPETS_EN
   return CODE_SNIPPETS_ZH
 }
 function getSreBlackwords(locale: OfficeLocale): string[] {
-  if (locale === 'zh-TW') return SRE_BLACKWORDS_ZH_TW
+  if (locale === 'zh-TW') return SRE_BLACKWORDS_TH
   if (locale === 'en') return SRE_BLACKWORDS_EN
   return SRE_BLACKWORDS_ZH
 }
 function getPhotoComments(locale: OfficeLocale): string[] {
-  if (locale === 'zh-TW') return PHOTO_COMMENTS_ZH_TW
+  if (locale === 'zh-TW') return PHOTO_COMMENTS_TH
   if (locale === 'en') return PHOTO_COMMENTS_EN
   return PHOTO_COMMENTS_ZH
 }
 function getTempWorkerLabel(locale: OfficeLocale): string {
-  if (locale === 'zh-TW') return '臨時工'
+  if (locale === 'zh-TW') return 'โรบินสำรอง'
   if (locale === 'en') return 'Temp'
   return '临时工'
 }
 function getGatewaySreLabel(locale: OfficeLocale): string {
-  if (locale === 'zh-TW') return '值班工程師'
+  if (locale === 'zh-TW') return 'อัลเฟรด'
   if (locale === 'en') return 'On-Call SRE'
   return '值班SRE'
 }
@@ -364,7 +419,7 @@ const SUBAGENT_PRIORITY_SEAT_IDS = [
 const SUBAGENT_SPAWN_CENTER_COL = 10
 const SUBAGENT_SPAWN_CENTER_ROW = 14
 const SUBAGENT_RUN_SPEED_MULTIPLIER = 2.8
-const GATEWAY_SRE_LABEL = '值班SRE'
+const GATEWAY_SRE_LABEL = 'Alfred'
 const GATEWAY_SRE_STANDBY_COL = 2
 const GATEWAY_SRE_STANDBY_ROW = 14
 const GATEWAY_SRE_RESCUE_CANDIDATES = [
@@ -429,7 +484,7 @@ export class OfficeState {
     if (sre) sre.label = getGatewaySreLabel(locale)
     // Re-label any temp workers
     for (const [, ch] of this.characters) {
-      if (ch.label === '临时工' || ch.label === '臨時工' || ch.label === 'Temp') {
+      if (ch.label === '临时工' || ch.label === '臨時工' || ch.label === 'Temp' || ch.label === 'โรบินสำรอง') {
         ch.label = getTempWorkerLabel(locale)
       }
     }
@@ -793,7 +848,7 @@ export class OfficeState {
     const id = OfficeState.GATEWAY_SRE_ID
     if (this.characters.has(id)) return
     const spawn = this.findClosestWalkable(GATEWAY_SRE_STANDBY_COL, GATEWAY_SRE_STANDBY_ROW)
-    const ch = createCharacter(id, 2, null, null, 0)
+    const ch = createCharacter(id, 1, null, null, 0)
     ch.isSystemRole = true
     ch.systemRoleType = 'gateway_sre'
     ch.systemStatus = this.gatewaySreStatus

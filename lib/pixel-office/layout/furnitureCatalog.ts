@@ -12,6 +12,16 @@ import {
   CAMERA_SPRITE,
   LAMP_SPRITE,
   SERVER_RACK_SPRITE,
+  COMMAND_CONSOLE_SPRITE,
+  BATCOMPUTER_SPRITE,
+  HOLO_TABLE_SPRITE,
+  BATSUIT_DISPLAY_SPRITE,
+  TROPHY_CASE_SPRITE,
+  BATSIGNAL_PANEL_SPRITE,
+  ORACLE_TERMINAL_SPRITE,
+  ALFRED_STATION_SPRITE,
+  TRAINING_DUMMY_SPRITE,
+  GADGET_BENCH_SPRITE,
 } from '../sprites/spriteData'
 import {
   TS_TABLE_WOOD_SM_VERTICAL, TS_TABLE_WOOD_SM_HORIZONTAL,
@@ -64,6 +74,16 @@ export const FURNITURE_CATALOG: CatalogEntryWithCategory[] = [
   { type: FurnitureType.COFFEE,     label: 'Coffee',     footprintW: 1, footprintH: 1, sprite: [],                  isDesk: false, category: 'decor', emoji: '☕', canPlaceOnSurfaces: true, emojiScale: 0.67 },
   { type: FurnitureType.LAMP,       label: 'Lamp',       footprintW: 1, footprintH: 1, sprite: LAMP_SPRITE,         isDesk: false, category: 'decor' },
   { type: FurnitureType.SERVER_RACK, label: 'Server Rack', footprintW: 2, footprintH: 2, sprite: SERVER_RACK_SPRITE, isDesk: false, category: 'electronics' },
+  { type: FurnitureType.COMMAND_CONSOLE, label: 'Command Console', footprintW: 2, footprintH: 1, sprite: COMMAND_CONSOLE_SPRITE, isDesk: true, category: 'electronics' },
+  { type: FurnitureType.BATCOMPUTER, label: 'Batcomputer', footprintW: 4, footprintH: 2, sprite: BATCOMPUTER_SPRITE, isDesk: true, category: 'electronics' },
+  { type: FurnitureType.HOLO_TABLE, label: 'Holographic Table', footprintW: 2, footprintH: 2, sprite: HOLO_TABLE_SPRITE, isDesk: true, category: 'electronics' },
+  { type: FurnitureType.BATSUIT_DISPLAY, label: 'Batsuit Display', footprintW: 1, footprintH: 2, sprite: BATSUIT_DISPLAY_SPRITE, isDesk: false, category: 'decor' },
+  { type: FurnitureType.TROPHY_CASE, label: 'Trophy Case', footprintW: 2, footprintH: 2, sprite: TROPHY_CASE_SPRITE, isDesk: false, category: 'storage' },
+  { type: FurnitureType.BATSIGNAL_PANEL, label: 'Bat-Signal Panel', footprintW: 2, footprintH: 1, sprite: BATSIGNAL_PANEL_SPRITE, isDesk: false, category: 'wall', canPlaceOnWalls: true },
+  { type: FurnitureType.ORACLE_TERMINAL, label: 'Oracle Terminal', footprintW: 2, footprintH: 1, sprite: ORACLE_TERMINAL_SPRITE, isDesk: true, category: 'electronics' },
+  { type: FurnitureType.ALFRED_STATION, label: 'Alfred Prep Station', footprintW: 2, footprintH: 2, sprite: ALFRED_STATION_SPRITE, isDesk: false, category: 'misc' },
+  { type: FurnitureType.TRAINING_DUMMY, label: 'Training Dummy', footprintW: 1, footprintH: 2, sprite: TRAINING_DUMMY_SPRITE, isDesk: false, category: 'decor' },
+  { type: FurnitureType.GADGET_BENCH, label: 'Lucius Gadget Bench', footprintW: 2, footprintH: 1, sprite: GADGET_BENCH_SPRITE, isDesk: true, category: 'electronics' },
 
   // ── Tileset — Desks ──
   { type: FurnitureType.TABLE_WOOD_SM_VERTICAL, label: 'Wood Table Vertical', footprintW: 1, footprintH: 2, sprite: TS_TABLE_WOOD_SM_VERTICAL, isDesk: true, category: 'desks' },
